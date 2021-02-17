@@ -1,0 +1,39 @@
+{
+    "afrinic": [
+        "DZ", "AO", "BJ", "BW", "BF", "BI", "CM", "CV", "CF", "TD",
+        "KM", "CG", "CD", "CI", "DJ", "EG", "GQ", "ER", "ET", "GA",
+        "GM", "GH", "GN", "GW", "KE", "LS", "LR", "LY", "MG", "ML",
+        "MR", "MU", "MA", "MZ", "NA", "NE", "NG", "RE", "RW", "ST",
+        "SN", "SC", "SL", "SO", "ZA", "SD", "SZ", "TZ", "TG", "TN",
+        "UG", "EH", "ZM", "ZW"
+    ],
+    "apnic": [
+        "AF", "AS", "AU", "BD", "BT", "IO", "BN", "KH", "CN", "CX",
+        "CC", "CK", "TL", "FJ", "PF", "TF", "GU", "HK", "IN", "ID",
+        "JP", "KI", "KP", "KR", "LA", "MO", "MY", "MV", "MH", "YT",
+        "FM", "MN", "MM", "NR", "NP", "NC", "NZ", "NU", "NF", "MP",
+        "PK", "PW", "PG", "PH", "PN", "WS", "SG", "SB", "LK", "TW",
+        "TH", "TK", "TO", "TV", "VU", "VN", "WF"
+    ],
+    "arin": [
+        "AI", "AQ", "AG", "BS", "BB", "BM", "BV", "CA", "KY", "DM",
+        "GD", "GP", "HM", "JM", "MW", "MQ", "PR", "KN", "LC", "VC",
+        "SH", "PM", "TC", "US", "UM", "VG", "VI"
+    ],
+    "lacnic": [
+        "AR", "AW", "BZ", "BO", "BR", "CL", "CO", "CR", "CU", "CW",
+        "DO", "EC", "SV", "FK", "GF", "GT", "GY", "HT", "HN", "MX",
+        "AN", "NI", "PA", "PY", "PE", "GS", "SR", "TT", "UY", "VE",
+        "BQ", "SX"
+    ],
+    "ripencc": [
+        "AX", "AL", "AD", "AM", "AT", "AZ", "BH", "BY", "BE", "BA",
+        "BG", "HR", "CY", "CZ", "DK", "EE", "FO", "FI", "FR", "GE",
+        "DE", "GI", "GR", "GL", "VA", "HU", "IS", "IR", "IQ", "IE",
+        "IL", "IT", "JO", "KZ", "KW", "KG", "LV", "LB", "LI", "LT",
+        "LU", "MK", "MT", "MD", "MC", "MS", "NL", "NO", "OM", "PS",
+        "PL", "PT", "QA", "RO", "RU", "SM", "SA", "CS", "SK", "SI",
+        "ES", "SJ", "SE", "CH", "SY", "TJ", "TR", "TM", "UA", "AE",
+        "GB", "UZ", "YE", "EU", "IM", "UK"
+    ]
+}
