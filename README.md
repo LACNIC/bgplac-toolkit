@@ -7,8 +7,9 @@ Scripts used to process data used in LACNIC's repport:
 
 Install dependencies:
 
-* pytricia
-* pandas
+* [pytricia](https://github.com/jsommers/pytricia)
+* [pandas](https://pandas.pydata.org/)
+* [PyBGPStream](https://bgpstream.caida.org/docs/install/pybgpstream)
 
 ## Usage
 
@@ -86,6 +87,7 @@ Groups the information in country-summary-<t>.csv, prefix-summary-<t>.csv and ix
 * Coordination: Guillermo Cicileo
 
 Strengthening Regional Internet Infrastructure
+
 LACNIC
 
 ## License
