@@ -153,7 +153,7 @@ def load_delegated(path):
 
 def process_ribs(ts, collectors, countries, catalog):
     date = ts[0:4] + '-' + ts[4:6] + '-' + ts[6:8]
-    print("* Processing RIBs from " + ts)
+    print("* Processing RIBs from " + ts + " (" + ", ".join(collectors) + ")")
     computed_lines = 0
     stream = pybgpstream.BGPStream(
         from_time=date+" 07:50:00", until_time=date+" 08:10:00",
@@ -174,8 +174,8 @@ def process_ribs(ts, collectors, countries, catalog):
                 result.add_path(prefix, prefix_cc, path, v)
             computed_lines += 1
             if computed_lines % 1000 == 0:
-                print('\r* ' + str(computed_lines) + " lines computed", end="", flush=True)
-    print('\r* ' + str(computed_lines) + " total lines computed\n", end="", flush=True)
+                print('\r* ' + str(computed_lines) + " rows computed", end="", flush=True)
+    print('\r* ' + str(computed_lines) + " total rows computed\n", end="", flush=True)
     return result
 
 def create_datasets(ts, source, result):

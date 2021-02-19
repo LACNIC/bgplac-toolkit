@@ -49,7 +49,7 @@ class RegionCatalog:
         for rir, countries in self.regions.items():
             if cc in countries:
                 return rir
-        print(cc + ' region not found')
+        # print(cc + ' region not found')
         return 'other'
 
 
@@ -123,7 +123,7 @@ def load_delegated(path):
                 catalog.add_pfx('ipv4', row[3], 33 - int(row[4]).bit_length(), row[1])
             elif row[2] == 'ipv6':
                 catalog.add_pfx('ipv6', row[3], int(row[4]), row[1])
-    print("DONE!")
+    print("- DONE!")
     return catalog
 
 def process_ases(path, res_catalog, reg_catalog, region):

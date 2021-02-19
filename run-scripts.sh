@@ -2,6 +2,7 @@
 
 TODAY=$(date +"%Y%m%d")
 TS=${1:-$TODAY}
+SECONDS=0
 
 python download-delegated.py --date $TS
 python process-ribs.py --date $TS
@@ -13,4 +14,4 @@ python process-as-data.py --date $TS
 
 rm data/delegated-$TS.csv
 
-echo "Elapsed: $(($SECONDS / 60))"
+echo "Elapsed time: $(($SECONDS / 60)) minutes"
