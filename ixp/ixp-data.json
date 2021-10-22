@@ -1,0 +1,94 @@
+{
+    "aep": {
+        "region": "lacnic",
+        "country": "AR",
+        "source": "pch"
+    },
+    "ari": {
+        "region": "lacnic",
+        "country": "CL",
+        "source": "pch"
+    },
+    "asu": {
+        "region": "lacnic",
+        "country": "PY",
+        "source": "pch"
+    },
+    "gye": {
+        "region": "lacnic",
+        "country": "EC",
+        "source": "pch"
+    },
+    "mex": {
+        "region": "lacnic",
+        "country": "MX",
+        "source": "pch"
+    },
+    "nqn": {
+        "region": "lacnic",
+        "country": "AR",
+        "source": "pch"
+    },
+    "ros": {
+        "region": "lacnic",
+        "country": "AR",
+        "source": "pch"
+    },
+    "scl": {
+        "region": "lacnic",
+        "country": "CL",
+        "source": "pch"
+    },
+    "sjo": {
+        "region": "lacnic",
+        "country": "CR",
+        "source": "pch"
+    },
+    "tgu": {
+        "region": "lacnic",
+        "country": "HN",
+        "source": "pch"
+    },
+    "ahtic": {
+        "region": "lacnic",
+        "country": "HT",
+        "source": "lacnic",
+        "path": "Haiti/Puerto_Principe/AHTIC",
+        "time": "0600"
+    },
+    "aprosva": {
+        "region": "lacnic",
+        "country": "EC",
+        "source": "lacnic",
+        "path": "Ecuador/Guayaquil/APROSVA",
+        "time": "0600"
+    },
+    "crix": {
+        "region": "lacnic",
+        "country": "CR",
+        "source": "lacnic",
+        "path": "Costa_Rica/San_Jose/CRIX",
+        "time": "0600"
+    },
+    "ixpgt": {
+        "region": "lacnic",
+        "country": "GT",
+        "source": "lacnic",
+        "path": "Guatemala/Guatemala_City/IXP-GT",
+        "time": "0600"
+    },
+    "ixsy": {
+        "region": "lacnic",
+        "country": "MX",
+        "source": "lacnic",
+        "path": "Mexico/Merida/IXSY",
+        "time": "0600"
+    },
+    "ixpy": {
+        "region": "lacnic",
+        "country": "PY",
+        "source": "lacnic",
+        "path": "Paraguay/Asuncion/IXPY",
+        "time": "0400"
+    }
+}
