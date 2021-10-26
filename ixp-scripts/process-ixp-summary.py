@@ -1,28 +1,41 @@
 #!/usr/bin/env python3
 
 
+import sys
 import click
 import csv
 import json
 import ipaddress
 import pandas as pd
+import os
 from datetime import datetime
 
 
 @click.command()
 @click.option('--date', default='00000000', help='date of calculation')
 @click.option('--ixp', default='aep', help='ixp identifier')
-@click.option('--source', default='data', help='directory where the data is stored')
-def main(date, ixp, source):
+@click.option('--src', default='data', help='source directory to retrieve data')
+@click.option('--dst', default=False, help='directory where the data is stored')
+@click.option('--subfolder/--no-subfolder', default=True, help='creates subfolder for ixp')
+def main(date, ixp, src, dst, subfolder):
     if date == '00000000':
         date = datetime.today().strftime('%Y%m%d')
+    
+    if subfolder:
+        src =  "{dir}/{ixp}".format(dir=src, ixp=ixp)
+        if not dst:
+            dst = src
+        else:
+            dst = "{dir}/{ixp}".format(dir=dst, ixp=ixp)
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+    elif not dst:
+        dst = src
 
-    inpath1 = "{dir}/ixp-routing-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date)
-    inpath2 = "{dir}/aspath-freq-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date)
-    inpath3 = "{dir}/prepend-freq-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date)
-    outpath = "{dir}/ixp-summary-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date)
+    inpath1 = "{dir}/ixp-routing-{ixp}-{date}.csv".format(dir=src, ixp=ixp, date=date)
+    inpath2 = "{dir}/aspath-freq-{ixp}-{date}.csv".format(dir=src, ixp=ixp, date=date)
+    outpath = "{dir}/ixp-summary-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
 
-    with open("ixp-data.json") as ixpfile, open('../regions.json') as rirfile, open(inpath1, newline='') as infile:
+    with open(os.path.join(sys.path[0], "../ixp-data.json")) as ixpfile, open(os.path.join(sys.path[0], '../regions.json')) as rirfile, open(inpath1, newline='') as infile:
         ixpdata = json.load(ixpfile)
         if ixp not in ixpdata:
             raise Exception("IXP not found")

@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 
 
+import sys
 import click
 import csv
 import gzip
 import json
-import re
+import os
 import pytricia
 import pybgpstream
+import re
 import urllib.request
 from datetime import datetime
 
@@ -27,7 +29,7 @@ class ResourceCatalog:
     def get_pfx(self, v, address):
         if address in self.ptree[v]:
             return self.ptree[v].get(address)
-        print("! WARNING! {v} {net} country not found".format(v=v, net=address))
+        # print("! WARNING! {v} {net} country not found".format(v=v, net=address))
         return 'ZZ'
 
     def add_asn(self, asn, cc):
@@ -85,7 +87,7 @@ def getpath(strpath):
     return path
 
 def process_pch(url, ipv, catalog, writer):
-    urllib.request.urlretrieve(url, "{dir}/temp.gz".format(dir='.'))
+    urllib.request.urlretrieve(url % (ipv, ipv), "{dir}/temp.gz".format(dir='.'))
     with gzip.open("{dir}/temp.gz".format(dir='.'),'rt') as fgzp:
         is_header = True
         ipv46 = '[A-Za-z0-9:\.]+'
@@ -126,33 +128,48 @@ def process_pch(url, ipv, catalog, writer):
 @click.command()
 @click.option('--date', default='00000000', help='date of calculation')
 @click.option('--ixp', default='aep', help='ixp identifier')
-@click.option('--source', default='data', help='directory where the data is stored')
-def main(date, ixp, source):
+@click.option('--dst', default='data', help='directory where the data is stored')
+@click.option('--subfolder/--no-subfolder', default=True, help='creates subfolder for ixp')
+@click.option('--delegated-src', default=False, help='delegated file location')
+
+def main(date, ixp, dst, subfolder, delegated_src):
     if date == '00000000':
         date = datetime.today().strftime('%Y%m%d')
+
+    if not delegated_src:
+        url = "https://ftp.ripe.net/pub/stats/ripencc/nro-stats/{d}/combined-stat".format(d=date)
+        delpath = "{dir}/delegated-{date}.csv".format(dir=dst, date=date)
+        print("* Downloading delegated from {url}".format(url=url))
+        urllib.request.urlretrieve(url, delpath)
+        print("- DONE!")
+    else:
+        delpath = "{dir}/delegated-{date}.csv".format(dir=delegated_src, date=date)
 
     year = date[0:4]
     month = date[4:6]
     day = date[6:8]
 
     catalog = ResourceCatalog()
-    catalog.load_delegated("{dir}/delegated-{date}.csv".format(dir=source, date=date))
+    catalog.load_delegated(delpath)
 
-    with open('ixp-data.json') as json_file, open("{dir}/bgp-table-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date), 'w', newline='') as fcsv:
+    if subfolder:
+        outfile = "{dir}/{ixp}/bgp-table-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
+        os.makedirs(os.path.dirname(outfile), exist_ok=True)
+    else:
+        outfile = "{dir}/bgp-table-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
+
+    with open(os.path.join(sys.path[0], '../ixp-data.json')) as json_file, open(outfile, 'w', newline='') as fcsv:
         writer = csv.writer(fcsv)
         writer.writerow(["prefix", "prefix_cc", "as_path", "as_path_cc"])
         ixpdata = json.load(json_file)
+        print("* {ixp} selected".format(ixp=ixp))
         if ixp not in ixpdata:
             raise Exception("IXP not found")
         selected = ixpdata[ixp]
-
         if selected['source'] == 'pch':
-            ipv = '4'
-            url = "https://www.pch.net/resources/Routing_Data/IPv{ipv}_daily_snapshots/{year}/{month}/route-collector.{ixp}.pch.net/route-collector.{ixp}.pch.net-ipv{ipv}_bgp_routes.{year}.{month}.{day}.gz".format(ipv=ipv, year=year, month=month, day=day, ixp=ixp)
-            process_pch(url, ipv, catalog, writer)
-            ipv = '6'
-            url = "https://www.pch.net/resources/Routing_Data/IPv{ipv}_daily_snapshots/{year}/{month}/route-collector.{ixp}.pch.net/route-collector.{ixp}.pch.net-ipv{ipv}_bgp_routes.{year}.{month}.{day}.gz".format(ipv=ipv, year=year, month=month, day=day, ixp=ixp)
-            process_pch(url, ipv, catalog, writer)
+            url = "https://www.pch.net/resources/Routing_Data/IPv%s_daily_snapshots/{year}/{month}/route-collector.{ixp}.pch.net/route-collector.{ixp}.pch.net-ipv%s_bgp_routes.{year}.{month}.{day}.gz"
+            process_pch(url.format(year=year, month=month, day=day, ixp=ixp), '4', catalog, writer)
+            process_pch(url.format(year=year, month=month, day=day, ixp=ixp), '6', catalog, writer)
         elif selected['source'] == 'lacnic':
             url = "https://ixpdata.labs.lacnic.net/raw-data/{path}/{y}/{m}/{d}/rib.{y}{m}{d}.{t}.bz2".format(path=selected['path'], y=year, m=month, d=day, t=selected['time'])
             stream = pybgpstream.BGPStream(data_interface="singlefile")

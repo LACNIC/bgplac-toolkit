@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
 
+import sys
 import click
 import csv
 import json
+import os
 from datetime import datetime
 
 
@@ -68,17 +70,30 @@ class RoutingTable:
 @click.command()
 @click.option('--date', default='00000000', help='date of calculation')
 @click.option('--ixp', default='aep', help='ixp identifier')
-@click.option('--source', default='data', help='directory where the data is stored')
-@click.option('--globsource', default=False, help='directory where the global tables data is stored')
-def main(date, ixp, source, globsource):
+@click.option('--src', default='data', help='source directory to retrieve data')
+@click.option('--dst', default=False, help='directory where the data is stored')
+@click.option('--global-src', default=False, help='directory where the global tables data is stored')
+@click.option('--subfolder/--no-subfolder', default=True, help='creates subfolder for ixp')
+def main(date, ixp, src, dst, global_src, subfolder):
     if date == '00000000':
         date = datetime.today().strftime('%Y%m%d')
-    if not globsource:
-        globsource = source
+    if not global_src:
+        global_src = src
+
+    
+    if subfolder:
+        src =  "{dir}/{ixp}".format(dir=src, ixp=ixp)
+        if not dst:
+            dst = src
+        else:
+            dst = "{dir}/{ixp}".format(dir=dst, ixp=ixp)
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+    elif not dst:
+        dst = src
         
-    fix = "{dir}/ixp-routing-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date)
-    fcc = "{dir}/prefix-data-{date}.csv".format(dir=globsource, date=date)
-    with open(fix, newline='') as csvix, open(fcc, newline='') as csvcc, open('ixp-data.json') as json_file:
+    fix = "{dir}/ixp-routing-{ixp}-{date}.csv".format(dir=src, ixp=ixp, date=date)
+    fcc = "{dir}/prefix-data-{date}.csv".format(dir=global_src, date=date)
+    with open(fix, newline='') as csvix, open(fcc, newline='') as csvcc, open(os.path.join(sys.path[0], "../ixp-data.json")) as json_file:
 
         ixpdata = json.load(json_file)
         if ixp not in ixpdata:
@@ -122,8 +137,8 @@ def main(date, ixp, source, globsource):
         ixonly_pf4s = ix_pf4s.difference(shared_pf4s)
         cconly_pf4s = cc_pf4s.difference(shared_pf4s)
 
-        outp1 = "{dir}/country-coverage-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date)
-        outp2 = "{dir}/country-coverage-summary-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date)
+        outp1 = "{dir}/country-coverage-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
+        outp2 = "{dir}/country-coverage-summary-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
         with open(outp1, 'w', newline='') as f1, open(outp2, 'w', newline='') as f2:
             w1 = csv.writer(f1)
             w1.writerow(["resource", "shared", "ixp_only", "country_only"])

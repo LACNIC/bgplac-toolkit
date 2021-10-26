@@ -5,6 +5,7 @@ import click
 import csv
 import json
 import sys
+import os
 import pytricia
 import pandas as pd
 import urllib.request
@@ -42,7 +43,7 @@ class ResourceCatalog:
 class RegionCatalog:
 
     def __init__(self):
-        with open('regions.json') as json_file:
+        with open(os.path.join(sys.path[0], '../regions.json')) as json_file:
             self.regions = json.load(json_file)
 
     def get_region(self, cc):

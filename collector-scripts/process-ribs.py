@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 
+import sys
 import click
 import pytricia
 import pybgpstream
 import csv
 import json
+import os
 import urllib.request
 from datetime import datetime
 
@@ -124,7 +126,7 @@ class RoutingDatabase:
 
 
 def load_countries(region):
-    with open('regions.json') as json_file:
+    with open(os.path.join(sys.path[0], '../regions.json')) as json_file:
         data = json.load(json_file)
         if region in data:
             return data[region]

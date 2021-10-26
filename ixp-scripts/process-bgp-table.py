@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
 
+import sys
 import click
 import csv
 import json
+import os
 from datetime import datetime
 
 
@@ -68,13 +70,23 @@ class RoutingTable:
 @click.command()
 @click.option('--date', default='00000000', help='date of calculation')
 @click.option('--ixp', default='aep', help='ixp identifier')
-@click.option('--source', default='data', help='directory where the data is stored')
-def main(date, ixp, source):
+@click.option('--src', default='data', help='source directory to retrieve data')
+@click.option('--dst', default=False, help='directory where the data is stored')
+@click.option('--subfolder/--no-subfolder', default=True, help='creates subfolder for ixp')
+def main(date, ixp, src, dst, subfolder):
     if date == '00000000':
         date = datetime.today().strftime('%Y%m%d')
-        
-    path = "{dir}/bgp-table-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date)
-    with open(path, newline='') as csvfile, open('../regions.json') as rirfile:
+    
+    if not dst:
+        dst = src
+    if subfolder:
+        dst = "{dir}/{ixp}".format(dir=dst, ixp=ixp)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        path = "{dir}/{ixp}/bgp-table-{ixp}-{date}.csv".format(dir=src, ixp=ixp, date=date)
+    else:
+        path = "{dir}/bgp-table-{ixp}-{date}.csv".format(dir=src, ixp=ixp, date=date)
+
+    with open(path, newline='') as csvfile, open(os.path.join(sys.path[0], '../regions.json')) as rirfile:
         regions = json.load(rirfile)
         cctorir = {}
         ixproutingtable = RoutingTable('lacnic', cctorir)
@@ -90,9 +102,9 @@ def main(date, ixp, source):
             cc_path = row['as_path_cc'].split()
             ixproutingtable.add_path(pfx, asn_path, cc_path)
 
-        outp1 = "{dir}/ixp-routing-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date)
-        outp2 = "{dir}/aspath-freq-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date)
-        outp3 = "{dir}/preprend-freq-{ixp}-{date}.csv".format(dir=source, ixp=ixp, date=date)
+        outp1 = "{dir}/ixp-routing-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
+        outp2 = "{dir}/aspath-freq-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
+        outp3 = "{dir}/preprend-freq-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
         with open(outp1, 'w', newline='') as f1, open(outp2, 'w', newline='') as f2, open(outp3, 'w', newline='') as f3:
             w1 = csv.writer(f1)
             w1.writerow(["peer_cc", "peer_asn", "origin_cc", "origin_asn", "prefixes_ipv4", "prefixes_ipv6"])
