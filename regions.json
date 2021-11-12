@@ -21,10 +21,10 @@
         "SH", "PM", "TC", "US", "UM", "VG", "VI"
     ],
     "lacnic": [
-        "AR", "AW", "BZ", "BO", "BR", "CL", "CO", "CR", "CU", "CW",
-        "DO", "EC", "SV", "FK", "GF", "GT", "GY", "HT", "HN", "MX",
-        "AN", "NI", "PA", "PY", "PE", "GS", "SR", "TT", "UY", "VE",
-        "BQ", "SX"
+        "AR", "AW", "BO", "BR", "BZ", "CL", "CO", "CR", "CU", "CW",
+        "DO", "EC", "FK", "GT", "GY", "HN", "HT", "MX", "NI", "PA",
+        "PE", "PY", "SR", "SV", "TT", "UY", "VE", "BQ", "SX", "GF",
+        "AN", "GS"
     ],
     "ripencc": [
         "AX", "AL", "AD", "AM", "AT", "AZ", "BH", "BY", "BE", "BA",
