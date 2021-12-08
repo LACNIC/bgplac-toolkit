@@ -62,7 +62,7 @@
     "ahtic": {
         "region": "lacnic",
         "country": "HT",
-        "active": true,
+        "active": false,
         "source": "lacnic",
         "path": "Haiti/Puerto_Principe/AHTIC",
         "time": "0600"
@@ -99,12 +99,20 @@
         "path": "Mexico/Merida/IXSY",
         "time": "0600"
     },
+    "ixpbb": {
+        "region": "lacnic",
+        "country": "AR",
+        "active": true,
+        "source": "lacnic",
+        "path": "Argentina/Bahia_Blanca/IXPBB",
+        "time": "0600"
+    },
     "ixpy": {
         "region": "lacnic",
         "country": "PY",
         "active": true,
         "source": "lacnic",
         "path": "Paraguay/Asuncion/IXPY",
-        "time": "0400"
+        "time": "0600"
     }
 }
