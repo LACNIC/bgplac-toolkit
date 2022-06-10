@@ -104,7 +104,7 @@ def main(date, ixp, src, dst, subfolder):
 
         outp1 = "{dir}/ixp-routing-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
         outp2 = "{dir}/aspath-freq-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
-        outp3 = "{dir}/preprend-freq-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
+        outp3 = "{dir}/prepend-freq-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
         with open(outp1, 'w', newline='') as f1, open(outp2, 'w', newline='') as f2, open(outp3, 'w', newline='') as f3:
             w1 = csv.writer(f1)
             w1.writerow(["peer_cc", "peer_asn", "origin_cc", "origin_asn", "prefixes_ipv4", "prefixes_ipv6"])

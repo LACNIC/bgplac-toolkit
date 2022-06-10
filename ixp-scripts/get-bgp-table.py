@@ -95,8 +95,8 @@ def process_pch(url, ipv, catalog, writer):
         prefix = ''
         for line in fgzp:
             if is_header:
-	            if 'Network' in line:
-		            is_header = False
+                if 'Network' in line:
+                    is_header = False
             else:
                 if line[0:8] == 'Displayed':
                     print('EOF')
@@ -131,8 +131,8 @@ def process_pch(url, ipv, catalog, writer):
 @click.option('--dst', default='data', help='directory where the data is stored')
 @click.option('--subfolder/--no-subfolder', default=True, help='creates subfolder for ixp')
 @click.option('--delegated-src', default=False, help='delegated file location')
-
-def main(date, ixp, dst, subfolder, delegated_src):
+@click.option('--ixp-data', default='../ixp-data.json', help='directory where the ixp data is stored')
+def main(date, ixp, dst, subfolder, delegated_src, ixp_data):
     if date == '00000000':
         date = datetime.today().strftime('%Y%m%d')
 
@@ -158,7 +158,11 @@ def main(date, ixp, dst, subfolder, delegated_src):
     else:
         outfile = "{dir}/bgp-table-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
 
-    with open(os.path.join(sys.path[0], '../ixp-data.json')) as json_file, open(outfile, 'w', newline='') as fcsv:
+    if ixp_data.startswith('/'):
+        ixpdata_path = ixp_data
+    else:
+        ixpdata_path = os.path.join(sys.path[0], ixp_data)
+    with open(ixpdata_path) as json_file, open(outfile, 'w', newline='') as fcsv:
         writer = csv.writer(fcsv)
         writer.writerow(["prefix", "prefix_cc", "as_path", "as_path_cc"])
         ixpdata = json.load(json_file)

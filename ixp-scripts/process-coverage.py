@@ -74,7 +74,8 @@ class RoutingTable:
 @click.option('--dst', default=False, help='directory where the data is stored')
 @click.option('--global-src', default=False, help='directory where the global tables data is stored')
 @click.option('--subfolder/--no-subfolder', default=True, help='creates subfolder for ixp')
-def main(date, ixp, src, dst, global_src, subfolder):
+@click.option('--ixp-data', default='../ixp-data.json', help='directory where the ixp data is stored')
+def main(date, ixp, src, dst, global_src, subfolder, ixp_data):
     if date == '00000000':
         date = datetime.today().strftime('%Y%m%d')
     if not global_src:
@@ -93,7 +94,11 @@ def main(date, ixp, src, dst, global_src, subfolder):
         
     fix = "{dir}/ixp-routing-{ixp}-{date}.csv".format(dir=src, ixp=ixp, date=date)
     fcc = "{dir}/prefix-data-{date}.csv".format(dir=global_src, date=date)
-    with open(fix, newline='') as csvix, open(fcc, newline='') as csvcc, open(os.path.join(sys.path[0], "../ixp-data.json")) as json_file:
+    if ixp_data.startswith('/'):
+        ixpdata_path = ixp_data
+    else:
+        ixpdata_path = os.path.join(sys.path[0], ixp_data)
+    with open(fix, newline='') as csvix, open(fcc, newline='') as csvcc, open(ixpdata_path) as json_file:
 
         ixpdata = json.load(json_file)
         if ixp not in ixpdata:

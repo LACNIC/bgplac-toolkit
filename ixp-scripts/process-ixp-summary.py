@@ -17,7 +17,8 @@ from datetime import datetime
 @click.option('--src', default='data', help='source directory to retrieve data')
 @click.option('--dst', default=False, help='directory where the data is stored')
 @click.option('--subfolder/--no-subfolder', default=True, help='creates subfolder for ixp')
-def main(date, ixp, src, dst, subfolder):
+@click.option('--ixp-data', default='../ixp-data.json', help='directory where the ixp data is stored')
+def main(date, ixp, src, dst, subfolder, ixp_data):
     if date == '00000000':
         date = datetime.today().strftime('%Y%m%d')
     
@@ -35,7 +36,11 @@ def main(date, ixp, src, dst, subfolder):
     inpath2 = "{dir}/aspath-freq-{ixp}-{date}.csv".format(dir=src, ixp=ixp, date=date)
     outpath = "{dir}/ixp-summary-{ixp}-{date}.csv".format(dir=dst, ixp=ixp, date=date)
 
-    with open(os.path.join(sys.path[0], "../ixp-data.json")) as ixpfile, open(os.path.join(sys.path[0], '../regions.json')) as rirfile, open(inpath1, newline='') as infile:
+    if ixp_data.startswith('/'):
+        ixpdata_path = ixp_data
+    else:
+        ixpdata_path = os.path.join(sys.path[0], ixp_data)
+    with open(os.path.join(sys.path[0], ixp_data)) as ixpfile, open(ixpdata_path) as rirfile, open(inpath1, newline='') as infile:
         ixpdata = json.load(ixpfile)
         if ixp not in ixpdata:
             raise Exception("IXP not found")
