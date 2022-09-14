@@ -18,9 +18,15 @@ IXPS=$(echo $IXPSSTR | tr ";" "\n")
 for IX in $IXPS
 do
   python ixp-scripts/get-bgp-table.py --date $TS --ixp $IX --delegated-src data
-  python ixp-scripts/process-bgp-table.py --date $TS --ixp $IX
-  python ixp-scripts/process-coverage.py --date $TS --ixp $IX
-  python ixp-scripts/process-ixp-summary.py --date $TS --ixp $IX
+  if [ $? -eq 0 ]
+  then
+    python ixp-scripts/process-bgp-table.py --date $TS --ixp $IX
+    python ixp-scripts/process-coverage.py --date $TS --ixp $IX
+    python ixp-scripts/process-ixp-summary.py --date $TS --ixp $IX
+  else
+    echo "! Skipping $IX"
+    continue
+  fi
 done
 
 echo "Elapsed time: $(($SECONDS / 60)) minutes"

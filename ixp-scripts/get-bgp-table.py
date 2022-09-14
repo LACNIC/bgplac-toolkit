@@ -88,6 +88,7 @@ def getpath(strpath):
 
 def process_pch(url, ipv, catalog, writer):
     urllib.request.urlretrieve(url % (ipv, ipv), "{dir}/temp.gz".format(dir='.'))
+    rows = 0
     with gzip.open("{dir}/temp.gz".format(dir='.'),'rt') as fgzp:
         is_header = True
         ipv46 = '[A-Za-z0-9:\.]+'
@@ -115,6 +116,7 @@ def process_pch(url, ipv, catalog, writer):
                         cc_path = [catalog.get_asn(a) for a in path]
                         cc_prefix = catalog.get_pfx('ipv' + ipv, prefix)
                         writer.writerow([prefix, cc_prefix, " ".join(path), " ".join(cc_path)])
+                        rows += 1
                 else:
                     match = re.match(netre, line)
                     if match:
@@ -123,6 +125,7 @@ def process_pch(url, ipv, catalog, writer):
                             prefix = addprefix(match.group(1))
                         else:
                             prefix = match.group(1) + '/' + match.group(2)
+    return rows
 
 
 @click.command()
@@ -148,6 +151,7 @@ def main(date, ixp, dst, subfolder, delegated_src, ixp_data):
     year = date[0:4]
     month = date[4:6]
     day = date[6:8]
+    rows = 0
 
     catalog = ResourceCatalog()
     catalog.load_delegated(delpath)
@@ -172,8 +176,8 @@ def main(date, ixp, dst, subfolder, delegated_src, ixp_data):
         selected = ixpdata[ixp]
         if selected['source'] == 'pch':
             url = "https://www.pch.net/resources/Routing_Data/IPv%s_daily_snapshots/{year}/{month}/route-collector.{ixp}.pch.net/route-collector.{ixp}.pch.net-ipv%s_bgp_routes.{year}.{month}.{day}.gz"
-            process_pch(url.format(year=year, month=month, day=day, ixp=ixp), '4', catalog, writer)
-            process_pch(url.format(year=year, month=month, day=day, ixp=ixp), '6', catalog, writer)
+            rows += process_pch(url.format(year=year, month=month, day=day, ixp=ixp), '4', catalog, writer)
+            rows += process_pch(url.format(year=year, month=month, day=day, ixp=ixp), '6', catalog, writer)
         elif selected['source'] == 'lacnic':
             url = "https://ixpdata.labs.lacnic.net/raw-data/{path}/{y}/{m}/{d}/rib.{y}{m}{d}.{t}.bz2".format(path=selected['path'], y=year, m=month, d=day, t=selected['time'])
             stream = pybgpstream.BGPStream(data_interface="singlefile")
@@ -190,6 +194,10 @@ def main(date, ixp, dst, subfolder, delegated_src, ixp_data):
                         cc_path = [catalog.get_asn(a) for a in path]
                         cc_prefix = catalog.get_pfx(v, prefix)
                         writer.writerow([prefix, cc_prefix, " ".join(path), " ".join(cc_path)])
+                        rows += 1
+    if rows == 0:
+        raise Exception("No rows found")
+    print("* Processed rows: {rows}".format(rows=rows))
 
 
 if __name__ == '__main__':

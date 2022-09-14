@@ -8,6 +8,7 @@ import json
 import os
 from datetime import datetime
 
+csv.field_size_limit(sys.maxsize)
 
 class RoutingCountry:
 

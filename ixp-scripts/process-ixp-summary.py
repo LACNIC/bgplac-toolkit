@@ -10,6 +10,7 @@ import pandas as pd
 import os
 from datetime import datetime
 
+csv.field_size_limit(sys.maxsize)
 
 @click.command()
 @click.option('--date', default='00000000', help='date of calculation')

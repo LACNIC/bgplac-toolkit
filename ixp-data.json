@@ -1,65 +1,87 @@
 {
     "aep": {
+        "name": "cabase",
+        "city": "Buenos Aires",
         "region": "lacnic",
         "country": "AR",
         "active": true,
         "source": "pch"
     },
     "ari": {
+        "name": "pit-chile",
+        "city": "Arica",
         "region": "lacnic",
         "country": "CL",
         "active": true,
         "source": "pch"
     },
     "asu": {
+        "name": "ixpy",
+        "city": "Asunción",
         "region": "lacnic",
         "country": "PY",
         "active": true,
         "source": "pch"
     },
     "gye": {
+        "name": "aprosva",
+        "city": "Guayaquil",
         "region": "lacnic",
         "country": "EC",
         "active": true,
         "source": "pch"
     },
     "mex": {
+        "name": "citi",
+        "city": "Ciudad de México",
         "region": "lacnic",
         "country": "MX",
         "active": true,
         "source": "pch"
     },
     "nqn": {
+        "name": "cabase",
+        "city": "Neuquén",
         "region": "lacnic",
         "country": "AR",
         "active": true,
         "source": "pch"
     },
     "ros": {
+        "name": "cabase",
+        "city": "Rosario",
         "region": "lacnic",
         "country": "AR",
         "active": true,
         "source": "pch"
     },
     "scl": {
+        "name": "pit-chile",
+        "city": "Santiago",
         "region": "lacnic",
         "country": "CL",
         "active": true,
         "source": "pch"
     },
     "sjo": {
+        "name": "crix",
+        "city": "San José",
         "region": "lacnic",
         "country": "CR",
         "active": true,
         "source": "pch"
     },
     "tgu": {
+        "name": "ixp-tgu",
+        "city": "Tegucigalpa",
         "region": "lacnic",
         "country": "HN",
         "active": false,
         "source": "pch"
     },
     "ahtic": {
+        "name": "ahtic",
+        "city": "Puerto_Principe",
         "region": "lacnic",
         "country": "HT",
         "active": false,
@@ -68,6 +90,8 @@
         "time": "0600"
     },
     "aprosva": {
+        "name": "aprosva",
+        "city": "Guayaquil",
         "region": "lacnic",
         "country": "EC",
         "active": true,
@@ -76,6 +100,8 @@
         "time": "0600"
     },
     "crix": {
+        "name": "crix",
+        "city": "San José",
         "region": "lacnic",
         "country": "CR",
         "active": true,
@@ -84,6 +110,8 @@
         "time": "0600"
     },
     "ixpgt": {
+        "name": "ixpgt",
+        "city": "Ciudad de Guatemala",
         "region": "lacnic",
         "country": "GT",
         "active": true,
@@ -92,6 +120,8 @@
         "time": "0600"
     },
     "ixsy": {
+        "name": "ixsy",
+        "city": "Mérida",
         "region": "lacnic",
         "country": "MX",
         "active": true,
@@ -100,6 +130,8 @@
         "time": "0600"
     },
     "ixpbb": {
+        "name": "cabase",
+        "city": "Bahía Blanca",
         "region": "lacnic",
         "country": "AR",
         "active": true,
@@ -108,6 +140,8 @@
         "time": "0600"
     },
     "ixpy": {
+        "name": "ixpy",
+        "city": "Asunción",
         "region": "lacnic",
         "country": "PY",
         "active": true,
